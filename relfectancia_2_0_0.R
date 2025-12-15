@@ -1,18 +1,50 @@
 ####### funcion reflectancia 2.0.0 ##########
 ###funcion automatizacion reflectancia 
+########################
+## VERIFICACIÓN E INSTALACIÓN AUTOMÁTICA DE LIBRERÍAS
+#########################
 
-##librerias 
-library(dplyr)
-library(readr)
-library(tidyverse)
-library(data.table)
-library(glue)
-library(ggplot2)
-library(readxl)
-library(scales)
-library(zoo)
-library(stats)
-library(mgcv)
+paquetes <- c(
+  "dplyr",
+  "readr",
+  "tidyverse",
+  "data.table",
+  "glue",
+  "ggplot2",
+  "readxl",
+  "scales",
+  "zoo",
+  "stats",    # stats viene con R base, no necesita instalación
+  "mgcv"      # mgcv también viene con R base, pero lo incluimos por completitud
+)
+
+# Instalar los que faltan (excluyendo los de base que no necesitan instalación)
+paquetes_a_instalar <- paquetes[!paquetes %in% c("stats", "mgcv")]  # estos suelen venir preinstalados
+paquetes_faltantes <- paquetes_a_instalar[!paquetes_a_instalar %in% installed.packages()[,"Package"]]
+
+if (length(paquetes_faltantes) > 0) {
+  cat("Instalando paquetes faltantes:", paste(paquetes_faltantes, collapse = ", "), "\n")
+  install.packages(paquetes_faltantes, dependencies = TRUE)
+} else {
+  cat("Todos los paquetes necesarios ya están instalados.\n")
+}
+
+# Cargar todas las librerías
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(readr)
+  library(tidyverse)
+  library(data.table)
+  library(glue)
+  library(ggplot2)
+  library(readxl)
+  library(scales)
+  library(zoo)
+  library(stats)
+  library(mgcv)
+})
+
+cat("Librerías cargadas correctamente.\n\n")
 
 ##funcion 1: ordena los datos del txt
 reflec_order<-function(txt){
