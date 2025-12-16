@@ -337,6 +337,12 @@ auto_reflectancia <- function(carpeta_principal, muestreo = 0.2) {
 }
 
 
+
+
+
 version <- function(){
   print("Version 2.0.0")
 }
+
+
+
