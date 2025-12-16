@@ -110,18 +110,6 @@ renombrar_archivos <- function(folders) {
   }
 }
 
-version <- function(){
-  print("Version 1.0.3")
-}
-
-
-
-
-
-
-
-
-
 ##funcion 1: ordena los datos del txt
 reflec_order<-function(txt){
   dato<- txt[-c(1:15),] ###quitar filas que no nos sirven
@@ -349,4 +337,6 @@ auto_reflectancia <- function(carpeta_principal, muestreo = 0.2) {
 }
 
 
-
+version <- function(){
+  print("Version 2.0.0")
+}
