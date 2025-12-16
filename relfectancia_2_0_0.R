@@ -46,6 +46,82 @@ suppressPackageStartupMessages({
 
 cat("Librerías cargadas correctamente.\n\n")
 
+
+############ renombrar datos de reflectancia del nuevo formato ################
+
+# Función para renombrar archivos .txt en todas las subcarpetas de una carpeta principal
+renombrar_archivos <- function(folders) {
+  # Patrón fijo para los archivos
+  patron <- "^Reflection__\\d+__\\d+\\.txt$"
+  
+  # Obtener la lista de subcarpetas en la carpeta principal
+  subcarpetas <- list.dirs(folders, full.names = TRUE, recursive = FALSE)
+  
+  # Verificar si hay subcarpetas
+  if (length(subcarpetas) == 0) {
+    stop("No se encontraron subcarpetas en ", folders)
+  }
+  
+  # Inicializar un data frame para almacenar los resultados
+  resultados <- data.frame(Subcarpeta = character(), Original = character(), Nuevo = character(), stringsAsFactors = FALSE)
+  
+  # Recorrer cada subcarpeta
+  for (subdir in subcarpetas) {
+    # Listar archivos .txt en la subcarpeta que coincidan con el patrón
+    archivos <- list.files(subdir, pattern = patron, full.names = TRUE)
+    
+    # Verificar si se encontraron archivos
+    if (length(archivos) == 0) {
+      cat(sprintf("No se encontraron archivos .txt con el patrón en %s\n", subdir))
+      next
+    }
+    
+    # Crear nuevos nombres eliminando los números entre los guiones bajos intermedios
+    nuevos_nombres <- sapply(archivos, function(archivo) {
+      nombre_base <- basename(archivo)
+      # Reemplazar __XXX__ por __
+      nuevo_nombre <- sub("(__\\d+__)", "__", nombre_base)
+      file.path(subdir, nuevo_nombre)
+    })
+    
+    # Renombrar los archivos
+    for (i in seq_along(archivos)) {
+      file.rename(from = archivos[i], to = nuevos_nombres[i])
+    }
+    
+    # Agregar al data frame de resultados
+    resultados_subdir <- data.frame(
+      Subcarpeta = rep(subdir, length(archivos)),
+      Original = basename(archivos),
+      Nuevo = basename(nuevos_nombres),
+      stringsAsFactors = FALSE
+    )
+    resultados <- rbind(resultados, resultados_subdir)
+  }
+  
+  # Retornar el data frame con los resultados
+  if (nrow(resultados) == 0) {
+    cat("No se renombraron archivos en ninguna subcarpeta.\n")
+    return(NULL)
+  } else {
+    cat("Archivos renombrados:\n")
+    print(resultados)
+    return(resultados)
+  }
+}
+
+version <- function(){
+  print("Version 1.0.3")
+}
+
+
+
+
+
+
+
+
+
 ##funcion 1: ordena los datos del txt
 reflec_order<-function(txt){
   dato<- txt[-c(1:15),] ###quitar filas que no nos sirven
