@@ -1,0 +1,1 @@
+Estas funciones solo sirven patra el laboratorio de paleoclimatología CEAZA. no intentes copiar este codigo para usarlo en otras maquinas de reflectancia directamente. solo tomar como modo de ejemplo si se quiere aplicar algo parecido en otro laboratorio
